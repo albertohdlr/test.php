@@ -174,6 +174,13 @@ function require_ok($file, $desc = '')
 
 function use_ok($file, $desc = '')
 {
+    if(strtolower(substr($file,-4)) !== '.php') {
+        $pass = class_exists($file);
+        if($pass) {
+            return _proclaim($pass, $desc == '' ? "use_ok $file" : $desc);
+        }
+        $file =  str_replace(array('\\','_'),'/',$file) . '.php';
+    }
     $pass = require_once $file;
     return _proclaim($pass, $desc == '' ? "require_once $file" : $desc);
 }
